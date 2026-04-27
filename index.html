@@ -976,7 +976,7 @@
 // ---- DATOS ----
 const CREDENTIALS = { user: 'guillermo.rawson', pass: 'rawson2026' };
 
-let pendingPhotos = [];
+let pendingPhotos = []; // { name, preview (dataUrl local), file (File object) }
 let currentSlide = 0;
 let currentAlbum = null;
 let albumsCache = [];
@@ -994,13 +994,34 @@ async function apiPost(data) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
   });
-  if (!res.ok) throw new Error('Error al guardar');
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || 'Error al guardar');
+  }
   return res.json();
 }
 
 async function apiDelete(id) {
   const res = await fetch(`/api/albums/${id}`, { method: 'DELETE' });
   if (!res.ok) throw new Error('Error al eliminar');
+}
+
+// Subir una foto al Blob storage, devuelve URL pública
+async function uploadPhoto(file) {
+  const res = await fetch('/api/upload', {
+    method: 'POST',
+    headers: {
+      'Content-Type': file.type || 'image/jpeg',
+      'x-filename': encodeURIComponent(file.name)
+    },
+    body: file
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || 'Error al subir foto');
+  }
+  const data = await res.json();
+  return data.url;
 }
 
 // ---- IMAGEN HERO fija ----
@@ -1052,37 +1073,15 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && document.getElementById('login-section').classList.contains('active')) doLogin();
 });
 
-// ---- COMPRIMIR IMAGEN ----
-function compressImage(dataUrl, maxWidth = 1200, quality = 0.72) {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      let { width, height } = img;
-      if (width > maxWidth) {
-        height = Math.round(height * maxWidth / width);
-        width = maxWidth;
-      }
-      canvas.width = width;
-      canvas.height = height;
-      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-      resolve(canvas.toDataURL('image/jpeg', quality));
-    };
-    img.src = dataUrl;
-  });
-}
-
 // ---- FOTOS PENDIENTES ----
+// Guardamos el File original para subir al Blob, y un dataUrl para preview local
 function handleFiles(input) {
   const files = Array.from(input.files);
-  let loaded = 0;
   files.forEach(file => {
     const reader = new FileReader();
-    reader.onload = async e => {
-      const compressed = await compressImage(e.target.result);
-      pendingPhotos.push({ name: file.name, dataUrl: compressed });
-      loaded++;
-      if (loaded === files.length) renderPreviews();
+    reader.onload = e => {
+      pendingPhotos.push({ name: file.name, preview: e.target.result, file });
+      renderPreviews();
     };
     reader.readAsDataURL(file);
   });
@@ -1095,7 +1094,7 @@ function renderPreviews() {
   pendingPhotos.forEach((p, i) => {
     const div = document.createElement('div');
     div.className = 'photo-preview-item';
-    div.innerHTML = `<img src="${p.dataUrl}" alt="${p.name}">
+    div.innerHTML = `<img src="${p.preview}" alt="${p.name}">
       <button class="rm-photo" onclick="removePhoto(${i})">✕</button>`;
     container.appendChild(div);
   });
@@ -1113,13 +1112,26 @@ async function saveAlbum() {
   const desc = document.getElementById('album-desc').value.trim();
 
   if (!title || !year) return showToast('Completá título y año.');
+  if (!pendingPhotos.length) return showToast('Agregá al menos una foto.');
 
   const btn = document.querySelector('.btn-save');
   btn.disabled = true;
-  btn.textContent = 'Guardando...';
 
   try {
-    await apiPost({ title, year, description: desc, photos: pendingPhotos });
+    // 1. Subir fotos una a una al Blob
+    const uploadedPhotos = [];
+    for (let i = 0; i < pendingPhotos.length; i++) {
+      const p = pendingPhotos[i];
+      btn.textContent = `Subiendo foto ${i + 1}/${pendingPhotos.length}...`;
+      const url = await uploadPhoto(p.file);
+      uploadedPhotos.push({ name: p.name, url });
+    }
+
+    // 2. Guardar álbum en Neon con las URLs
+    btn.textContent = 'Guardando álbum...';
+    await apiPost({ title, year, description: desc, photos: uploadedPhotos });
+
+    // Reset
     document.getElementById('album-title').value = '';
     document.getElementById('album-year').value = '';
     document.getElementById('album-desc').value = '';
@@ -1128,7 +1140,8 @@ async function saveAlbum() {
     await loadAdminList();
     showToast('Álbum guardado correctamente.');
   } catch (e) {
-    showToast('Error al guardar. Intentá de nuevo.');
+    console.error(e);
+    showToast('Error: ' + e.message);
   } finally {
     btn.disabled = false;
     btn.textContent = 'Guardar álbum';
@@ -1173,8 +1186,10 @@ async function renderTimeline(albums) {
 
   container.innerHTML = albums.map(a => {
     const photos = a.photos || [];
-    const thumb = photos.length
-      ? `<div class="timeline-thumb"><img src="${photos[0].dataUrl}" alt="${a.title}"></div>`
+    // Las fotos ahora tienen .url en vez de .dataUrl
+    const imgSrc = photos.length ? photos[0].url : null;
+    const thumb = imgSrc
+      ? `<div class="timeline-thumb"><img src="${imgSrc}" alt="${escHtml(a.title)}"></div>`
       : `<div class="timeline-thumb">${String(a.year).slice(-2)}</div>`;
 
     return `
@@ -1213,8 +1228,9 @@ function renderAdminList(albums) {
   }
   container.innerHTML = albums.map(a => {
     const photos = a.photos || [];
-    const thumb = photos.length
-      ? `<div class="album-thumb-small"><img src="${photos[0].dataUrl}" alt="${a.title}"></div>`
+    const imgSrc = photos.length ? photos[0].url : null;
+    const thumb = imgSrc
+      ? `<div class="album-thumb-small"><img src="${imgSrc}" alt="${escHtml(a.title)}"></div>`
       : `<div class="album-thumb-small">${String(a.year).slice(-2)}</div>`;
     return `<div class="album-list-item">
       ${thumb}
@@ -1248,7 +1264,7 @@ function openAlbum(id) {
         <div class="carousel-slides" id="carousel-slides">
           ${photos.map((p, i) => `
             <div class="carousel-slide">
-              <img src="${p.dataUrl}" alt="${escHtml(p.name)}">
+              <img src="${p.url}" alt="${escHtml(p.name)}">
               <div class="slide-caption">${escHtml(p.name)} — ${i + 1}/${photos.length}</div>
             </div>`).join('')}
         </div>
@@ -1315,7 +1331,7 @@ function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  setTimeout(() => t.classList.remove('show'), 3500);
 }
 
 // ---- UTILS ----
