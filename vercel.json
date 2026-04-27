@@ -1,4 +1,12 @@
 {
+  "functions": {
+    "api/albums/index.js": {
+      "maxDuration": 30
+    },
+    "api/albums/[id].js": {
+      "maxDuration": 10
+    }
+  },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" }
   ]
