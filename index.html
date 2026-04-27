@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escuela Guillermo Rawson – Historial</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #2d5a27;
+    --verde-claro: #4a7c42;
+    --verde-oscuro: #1a3a15;
+    --crema: #f5f0e8;
+    --blanco: #ffffff;
+    --gris-claro: #e8e4dc;
+    --gris-texto: #444;
+    --dorado: #b8860b;
+    --dorado-claro: #d4a017;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--crema);
+    color: var(--gris-texto);
+    min-height: 100vh;
+  }
+
+  /* ---- NAVBAR ---- */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(29, 58, 21, 0.96);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 60px;
+    border-bottom: 2px solid var(--dorado);
+  }
+
+  nav .logo {
+    font-family: 'Playfair Display', serif;
+    color: var(--crema);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  nav .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    align-items: center;
+  }
+
+  nav .nav-links a {
+    color: var(--gris-claro);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  nav .nav-links a:hover { color: var(--dorado-claro); }
+
+  nav .nav-links .btn-admin {
+    background: var(--dorado);
+    color: var(--verde-oscuro) !important;
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-weight: 700;
+    transition: background 0.2s;
+  }
+
+  nav .nav-links .btn-admin:hover { background: var(--dorado-claro); }
+
+  /* ---- HERO / BANNER ---- */
+  #hero {
+    position: relative;
+    height: 100vh;
+    min-height: 500px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  #hero .banner-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.55);
+  }
+
+  #hero .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(29,58,21,0.85) 0%, transparent 60%);
+  }
+
+  #hero .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 3rem 3rem 4rem;
+    max-width: 800px;
+  }
+
+  #hero .eyebrow {
+    color: var(--dorado-claro);
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  #hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    color: var(--blanco);
+    line-height: 1.1;
+    font-weight: 700;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    margin-bottom: 1rem;
+  }
+
+  #hero p {
+    color: rgba(245,240,232,0.85);
+    font-size: 1.1rem;
+    font-weight: 300;
+    max-width: 540px;
+    line-height: 1.7;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: rgba(245,240,232,0.6);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    animation: bounce 2s infinite;
+  }
+
+  .scroll-hint svg { width: 20px; height: 20px; }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ---- SECCIONES GENERALES ---- */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--verde-oscuro);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-line {
+    width: 60px;
+    height: 3px;
+    background: var(--dorado);
+    margin-bottom: 3rem;
+  }
+
+  /* ---- TIMELINE ---- */
+  #timeline-section {
+    background: var(--blanco);
+    padding: 5rem 0;
+  }
+
+  .timeline-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--verde-claro);
+    opacity: 0.3;
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .timeline-item:hover { transform: translateX(4px); }
+
+  .timeline-dot {
+    position: absolute;
+    left: -37px;
+    top: 6px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--verde-claro);
+    border: 3px solid var(--blanco);
+    box-shadow: 0 0 0 2px var(--verde-claro);
+    z-index: 1;
+    transition: background 0.2s;
+  }
+
+  .timeline-item:hover .timeline-dot { background: var(--dorado); box-shadow: 0 0 0 2px var(--dorado); }
+
+  .timeline-year {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--dorado);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+  }
+
+  .timeline-card {
+    background: var(--crema);
+    border: 1px solid var(--gris-claro);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .timeline-item:hover .timeline-card {
+    box-shadow: 0 4px 24px rgba(45,90,39,0.12);
+    border-color: var(--verde-claro);
+  }
+
+  .timeline-card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .timeline-thumb {
+    width: 64px;
+    height: 64px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: var(--gris-claro);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--verde-claro);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    overflow: hidden;
+  }
+
+  .timeline-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+  .timeline-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: var(--verde-oscuro);
+    margin-bottom: 0.3rem;
+  }
+
+  .timeline-info p {
+    font-size: 0.88rem;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  .timeline-badge {
+    margin-left: auto;
+    flex-shrink: 0;
+    background: var(--verde-claro);
+    color: var(--blanco);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* ---- MODAL GALERÍA ---- */
+  #modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  #modal-overlay.active { display: flex; }
+
+  #modal-box {
+    background: var(--blanco);
+    border-radius: 12px;
+    max-width: 860px;
+    width: 100%;
+    max-height: 92vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: fadeUp 0.25s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  #modal-header {
+    background: var(--verde-oscuro);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #modal-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--crema);
+    font-size: 1.2rem;
+  }
+
+  #modal-year-badge {
+    font-size: 0.75rem;
+    color: var(--dorado-claro);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  #modal-close {
+    background: none;
+    border: none;
+    color: var(--crema);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+
+  #modal-close:hover { background: rgba(255,255,255,0.1); }
+
+  #modal-body { padding: 1.5rem; overflow-y: auto; }
+
+  #modal-desc {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+    border-left: 3px solid var(--dorado);
+    padding-left: 1rem;
+  }
+
+  /* Carrusel */
+  .carousel-wrap {
+    position: relative;
+    background: #111;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    max-height: 420px;
+  }
+
+  .carousel-slides {
+    display: flex;
+    transition: transform 0.4s ease;
+    height: 100%;
+  }
+
+  .carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1a1a1a;
+    position: relative;
+  }
+
+  .carousel-slide img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .carousel-slide .slide-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    font-size: 0.8rem;
+    padding: 8px 12px;
+    text-align: center;
+  }
+
+  .carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .carousel-nav:hover { background: rgba(255,255,255,0.3); }
+  .carousel-prev { left: 10px; }
+  .carousel-next { right: 10px; }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 0 0;
+  }
+
+  .carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gris-claro);
+    cursor: pointer;
+    transition: background 0.2s;
+    border: none;
+  }
+
+  .carousel-dot.active { background: var(--verde-claro); }
+
+  .no-fotos {
+    text-align: center;
+    padding: 3rem;
+    color: #999;
+    font-size: 0.9rem;
+  }
+
+  /* ---- LOGIN ---- */
+  #login-section {
+    display: none;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background: var(--verde-oscuro);
+  }
+
+  #login-section.active { display: flex; }
+
+  .login-card {
+    background: var(--blanco);
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    width: 360px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  .login-logo {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .login-logo .escudo {
+    width: 60px;
+    height: 60px;
+    background: var(--verde-oscuro);
+    border-radius: 50%;
+    margin: 0 auto 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .login-logo .escudo svg { width: 32px; height: 32px; fill: var(--dorado-claro); }
+
+  .login-logo h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--verde-oscuro);
+    font-size: 1.2rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .login-logo p { font-size: 0.8rem; color: #999; }
+
+  .form-group { margin-bottom: 1.2rem; }
+
+  .form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--verde-oscuro);
+    margin-bottom: 6px;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--gris-claro);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: 'Lato', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-group input:focus { border-color: var(--verde-claro); }
+
+  .btn-login {
+    width: 100%;
+    padding: 12px;
+    background: var(--verde-oscuro);
+    color: var(--crema);
+    border: none;
+    border-radius: 6px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 0.5rem;
+  }
+
+  .btn-login:hover { background: var(--verde-claro); }
+
+  .login-error {
+    color: #c0392b;
+    font-size: 0.82rem;
+    margin-top: 0.75rem;
+    text-align: center;
+    display: none;
+  }
+
+  /* ---- DASHBOARD ---- */
+  #dashboard-section {
+    display: none;
+    min-height: 100vh;
+    background: var(--crema);
+    padding-top: 60px;
+  }
+
+  #dashboard-section.active { display: block; }
+
+  .dash-header {
+    background: var(--verde-oscuro);
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--dorado);
+  }
+
+  .dash-header h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--crema);
+    font-size: 1.3rem;
+  }
+
+  .dash-header p { color: rgba(245,240,232,0.6); font-size: 0.85rem; }
+
+  .btn-logout {
+    background: rgba(255,255,255,0.1);
+    color: var(--crema);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+  }
+
+  .btn-logout:hover { background: rgba(255,255,255,0.2); }
+
+  .dash-body { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+
+  /* Formulario nuevo álbum */
+  .dash-card {
+    background: var(--blanco);
+    border-radius: 10px;
+    border: 1px solid var(--gris-claro);
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .dash-card h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--verde-oscuro);
+    font-size: 1.1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--gris-claro);
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-full { margin-bottom: 1rem; }
+
+  .dash-label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--verde-oscuro);
+    margin-bottom: 5px;
+  }
+
+  .dash-input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid var(--gris-claro);
+    border-radius: 6px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.92rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .dash-input:focus { border-color: var(--verde-claro); }
+
+  textarea.dash-input { resize: vertical; min-height: 80px; }
+
+  .btn-add {
+    background: var(--verde-oscuro);
+    color: var(--crema);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-add:hover { background: var(--verde-claro); }
+
+  /* Drop zone fotos */
+  .dropzone {
+    border: 2px dashed var(--verde-claro);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 0.75rem;
+    background: var(--crema);
+  }
+
+  .dropzone:hover { background: rgba(74,124,66,0.06); }
+  .dropzone p { color: var(--verde-claro); font-size: 0.9rem; }
+  .dropzone .dz-icon { font-size: 2rem; margin-bottom: 0.5rem; color: var(--verde-claro); }
+  #file-input { display: none; }
+
+  .photo-previews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 0.75rem;
+  }
+
+  .photo-preview-item {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 2px solid var(--gris-claro);
+  }
+
+  .photo-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+
+  .photo-preview-item .rm-photo {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  /* Lista álbumes dashboard */
+  .album-list-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid var(--gris-claro);
+  }
+
+  .album-list-item:last-child { border-bottom: none; }
+
+  .album-thumb-small {
+    width: 56px;
+    height: 56px;
+    border-radius: 6px;
+    background: var(--gris-claro);
+    object-fit: cover;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--verde-claro);
+    font-size: 1.1rem;
+    overflow: hidden;
+  }
+
+  .album-thumb-small img { width: 100%; height: 100%; object-fit: cover; }
+
+  .album-list-info { flex: 1; min-width: 0; }
+  .album-list-info strong { display: block; color: var(--verde-oscuro); font-size: 0.95rem; }
+  .album-list-info span { font-size: 0.8rem; color: #888; }
+
+  .btn-delete {
+    background: none;
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+    border-radius: 5px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Lato', sans-serif;
+  }
+
+  .btn-delete:hover { background: #e74c3c; color: #fff; }
+
+  /* FOOTER */
+  footer {
+    background: var(--verde-oscuro);
+    color: rgba(245,240,232,0.6);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.82rem;
+    border-top: 2px solid var(--dorado);
+  }
+
+  footer strong { color: var(--crema); }
+
+  /* TOAST */
+  #toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--verde-oscuro);
+    color: var(--crema);
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    border-left: 4px solid var(--dorado);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  #toast.show { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    #hero .hero-content { padding: 2rem 1.25rem 3rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .dash-body { padding: 1rem; }
+    nav .logo { font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="main-nav">
+  <div class="logo">E. Guillermo Rawson</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showSection('home')">Inicio</a></li>
+    <li><a href="#timeline-section">Historial</a></li>
+    <li><a href="#" onclick="showSection('login')" class="btn-admin" id="nav-admin-btn">Administrar</a></li>
+  </ul>
+</nav>
+
+<!-- ====== SECCIÓN PRINCIPAL (HOME) ====== -->
+<div id="home-section">
+
+  <!-- HERO -->
+  <section id="hero">
+    <img class="banner-img" src="https://raw.githubusercontent.com/placeholder/school/main/banner.jpg" alt="Escuela Guillermo Rawson" id="hero-img" onerror="this.style.display='none'">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <p class="eyebrow">Godoy Cruz · Mendoza · desde 1854</p>
+      <h1>Escuela<br>Guillermo Rawson</h1>
+      <p>Un recorrido visual por la historia y los momentos que forjaron nuestra identidad como institución educativa.</p>
+    </div>
+    <div class="scroll-hint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      ver historial
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="timeline-section">
+    <div class="timeline-wrap">
+      <h2 class="section-title">Historial fotográfico</h2>
+      <div class="section-line"></div>
+      <div class="timeline" id="timeline-container">
+        <!-- generado por JS -->
+      </div>
+      <div id="empty-state" style="text-align:center;padding:3rem;color:#999;display:none;">
+        <p style="font-size:1rem;">Aún no hay álbumes publicados.</p>
+        <p style="font-size:0.85rem;margin-top:0.5rem;">El administrador puede agregar fotos desde el panel.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <strong>Escuela Guillermo Rawson</strong> · Godoy Cruz, Mendoza<br>
+    Historial institucional
+  </footer>
+</div>
+
+<!-- ====== LOGIN ====== -->
+<section id="login-section">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="escudo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L3 7v6c0 5.25 3.75 10.15 9 11.25C17.25 23.15 21 18.25 21 13V7L12 2zm0 2.2l7 3.89V13c0 4.15-2.95 8.01-7 9.12-4.05-1.11-7-4.97-7-9.12V8.09L12 4.2z"/>
+        </svg>
+      </div>
+      <h2>Panel Administrativo</h2>
+      <p>Escuela Guillermo Rawson</p>
+    </div>
+    <div class="form-group">
+      <label>Usuario</label>
+      <input type="text" id="login-user" placeholder="Usuario" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" id="login-pass" placeholder="Contraseña" autocomplete="current-password">
+    </div>
+    <button class="btn-login" onclick="doLogin()">Ingresar</button>
+    <div class="login-error" id="login-error">Usuario o contraseña incorrectos.</div>
+    <div style="text-align:center;margin-top:1.25rem;">
+      <a href="#" onclick="showSection('home')" style="font-size:0.82rem;color:#999;text-decoration:none;">← Volver al inicio</a>
+    </div>
+  </div>
+</section>
+
+<!-- ====== DASHBOARD ====== -->
+<div id="dashboard-section">
+  <div class="dash-header">
+    <div>
+      <h2>Panel de administración</h2>
+      <p>Gestión de álbumes e imágenes</p>
+    </div>
+    <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
+  </div>
+
+  <div class="dash-body">
+
+    <!-- Nuevo álbum -->
+    <div class="dash-card">
+      <h3>Agregar nuevo álbum</h3>
+      <div class="form-row">
+        <div>
+          <label class="dash-label">Título del álbum</label>
+          <input class="dash-input" type="text" id="album-title" placeholder="Ej: Acto del 25 de Mayo">
+        </div>
+        <div>
+          <label class="dash-label">Año</label>
+          <input class="dash-input" type="text" id="album-year" placeholder="Ej: 2023">
+        </div>
+      </div>
+      <div class="form-full">
+        <label class="dash-label">Descripción</label>
+        <textarea class="dash-input" id="album-desc" placeholder="Descripción del álbum..."></textarea>
+      </div>
+      <div class="form-full">
+        <label class="dash-label">Fotos</label>
+        <div class="dropzone" onclick="document.getElementById('file-input').click()">
+          <div class="dz-icon">📷</div>
+          <p>Hacer clic para seleccionar fotos (JPG, PNG, WEBP)</p>
+        </div>
+        <input type="file" id="file-input" multiple accept="image/*" onchange="handleFiles(this)">
+        <div class="photo-previews" id="photo-previews"></div>
+      </div>
+      <button class="btn-add" onclick="saveAlbum()">Guardar álbum</button>
+    </div>
+
+    <!-- Lista álbumes existentes -->
+    <div class="dash-card">
+      <h3>Álbumes publicados</h3>
+      <div id="admin-album-list">
+        <p style="color:#999;font-size:0.88rem;text-align:center;padding:1.5rem 0;">No hay álbumes aún.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL GALERÍA -->
+<div id="modal-overlay" onclick="closeModal(event)">
+  <div id="modal-box">
+    <div id="modal-header">
+      <div>
+        <div id="modal-year-badge"></div>
+        <div id="modal-title"></div>
+      </div>
+      <button id="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modal-body">
+      <p id="modal-desc"></p>
+      <div id="modal-gallery"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+// ---- DATOS ----
+const CREDENTIALS = { user: 'guillermo.rawson', pass: 'rawson2026' };
+const STORAGE_KEY = 'rawson_albums';
+
+let pendingPhotos = []; // { name, dataUrl }
+let currentSlide = 0;
+let currentAlbum = null;
+
+function getAlbums() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
+}
+
+function saveAlbums(albums) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(albums));
+}
+
+// ---- IMAGEN HERO desde localStorage si se guardó ----
+function initHero() {
+  const saved = localStorage.getItem('rawson_banner');
+  if (saved) document.getElementById('hero-img').src = saved;
+  else {
+    // Mostrar un fondo verde sólido si no hay imagen
+    document.getElementById('hero-img').style.display = 'none';
+    document.getElementById('hero').style.background = 'linear-gradient(135deg, #1a3a15 0%, #2d5a27 60%, #4a7c42 100%)';
+  }
+}
+
+// ---- NAVEGACIÓN ----
+function showSection(name) {
+  document.getElementById('home-section').style.display = 'none';
+  document.getElementById('login-section').classList.remove('active');
+  document.getElementById('dashboard-section').classList.remove('active');
+
+  if (name === 'home') {
+    document.getElementById('home-section').style.display = 'block';
+    document.getElementById('main-nav').style.display = 'flex';
+    renderTimeline();
+  } else if (name === 'login') {
+    document.getElementById('login-section').classList.add('active');
+    document.getElementById('main-nav').style.display = 'none';
+  } else if (name === 'dashboard') {
+    document.getElementById('dashboard-section').classList.add('active');
+    document.getElementById('main-nav').style.display = 'flex';
+    document.getElementById('nav-admin-btn').textContent = 'Panel';
+    renderAdminList();
+  }
+}
+
+// ---- AUTH ----
+function doLogin() {
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  if (u === CREDENTIALS.user && p === CREDENTIALS.pass) {
+    sessionStorage.setItem('rawson_auth', '1');
+    showSection('dashboard');
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    setTimeout(() => document.getElementById('login-error').style.display = 'none', 3000);
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem('rawson_auth');
+  document.getElementById('nav-admin-btn').textContent = 'Administrar';
+  showSection('home');
+}
+
+// Enter en login
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('login-section').classList.contains('active')) doLogin();
+});
+
+// ---- FOTOS PENDIENTES ----
+function handleFiles(input) {
+  const files = Array.from(input.files);
+  let loaded = 0;
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      pendingPhotos.push({ name: file.name, dataUrl: e.target.result });
+      loaded++;
+      if (loaded === files.length) renderPreviews();
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
+}
+
+function renderPreviews() {
+  const container = document.getElementById('photo-previews');
+  container.innerHTML = '';
+  pendingPhotos.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'photo-preview-item';
+    div.innerHTML = `<img src="${p.dataUrl}" alt="${p.name}">
+      <button class="rm-photo" onclick="removePhoto(${i})">✕</button>`;
+    container.appendChild(div);
+  });
+}
+
+function removePhoto(i) {
+  pendingPhotos.splice(i, 1);
+  renderPreviews();
+}
+
+// ---- GUARDAR ÁLBUM ----
+function saveAlbum() {
+  const title = document.getElementById('album-title').value.trim();
+  const year = document.getElementById('album-year').value.trim();
+  const desc = document.getElementById('album-desc').value.trim();
+
+  if (!title || !year) return showToast('Completá título y año.');
+
+  const albums = getAlbums();
+  albums.unshift({
+    id: Date.now(),
+    title, year, desc,
+    photos: [...pendingPhotos]
+  });
+
+  // Ordenar por año desc
+  albums.sort((a, b) => parseInt(b.year) - parseInt(a.year));
+  saveAlbums(albums);
+
+  // Reset
+  document.getElementById('album-title').value = '';
+  document.getElementById('album-year').value = '';
+  document.getElementById('album-desc').value = '';
+  pendingPhotos = [];
+  renderPreviews();
+  renderAdminList();
+  showToast('Álbum guardado correctamente.');
+}
+
+// ---- ELIMINAR ----
+function deleteAlbum(id) {
+  if (!confirm('¿Eliminar este álbum? Esta acción no se puede deshacer.')) return;
+  let albums = getAlbums().filter(a => a.id !== id);
+  saveAlbums(albums);
+  renderAdminList();
+  renderTimeline();
+  showToast('Álbum eliminado.');
+}
+
+// ---- TIMELINE ----
+function renderTimeline() {
+  const albums = getAlbums();
+  const container = document.getElementById('timeline-container');
+  const empty = document.getElementById('empty-state');
+
+  if (!albums.length) {
+    container.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+
+  empty.style.display = 'none';
+
+  container.innerHTML = albums.map(a => {
+    const thumb = a.photos && a.photos.length
+      ? `<div class="timeline-thumb"><img src="${a.photos[0].dataUrl}" alt="${a.title}"></div>`
+      : `<div class="timeline-thumb">${a.year.slice(-2)}</div>`;
+
+    return `
+    <div class="timeline-item" onclick="openAlbum(${a.id})">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">${a.year}</div>
+      <div class="timeline-card">
+        <div class="timeline-card-header">
+          ${thumb}
+          <div class="timeline-info">
+            <h3>${escHtml(a.title)}</h3>
+            <p>${escHtml(a.desc || 'Sin descripción.')}</p>
+          </div>
+          <span class="timeline-badge">${a.photos ? a.photos.length : 0} foto${(a.photos || []).length !== 1 ? 's' : ''}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ---- ADMIN LIST ----
+function renderAdminList() {
+  const albums = getAlbums();
+  const container = document.getElementById('admin-album-list');
+
+  if (!albums.length) {
+    container.innerHTML = '<p style="color:#999;font-size:0.88rem;text-align:center;padding:1.5rem 0;">No hay álbumes aún.</p>';
+    return;
+  }
+
+  container.innerHTML = albums.map(a => {
+    const thumb = a.photos && a.photos.length
+      ? `<div class="album-thumb-small"><img src="${a.photos[0].dataUrl}" alt="${a.title}"></div>`
+      : `<div class="album-thumb-small">${a.year.slice(-2)}</div>`;
+
+    return `<div class="album-list-item">
+      ${thumb}
+      <div class="album-list-info">
+        <strong>${escHtml(a.title)}</strong>
+        <span>${a.year} · ${(a.photos || []).length} foto${(a.photos || []).length !== 1 ? 's' : ''}</span>
+      </div>
+      <button class="btn-delete" onclick="deleteAlbum(${a.id})">Eliminar</button>
+    </div>`;
+  }).join('');
+}
+
+// ---- MODAL / CARRUSEL ----
+function openAlbum(id) {
+  const albums = getAlbums();
+  currentAlbum = albums.find(a => a.id === id);
+  if (!currentAlbum) return;
+  currentSlide = 0;
+
+  document.getElementById('modal-title').textContent = currentAlbum.title;
+  document.getElementById('modal-year-badge').textContent = currentAlbum.year;
+  document.getElementById('modal-desc').textContent = currentAlbum.desc || '';
+
+  const gallery = document.getElementById('modal-gallery');
+  const photos = currentAlbum.photos || [];
+
+  if (!photos.length) {
+    gallery.innerHTML = '<div class="no-fotos">Este álbum no tiene fotos aún.</div>';
+  } else {
+    gallery.innerHTML = `
+      <div class="carousel-wrap">
+        <div class="carousel-slides" id="carousel-slides">
+          ${photos.map((p, i) => `
+            <div class="carousel-slide">
+              <img src="${p.dataUrl}" alt="${escHtml(p.name)}">
+              <div class="slide-caption">${escHtml(p.name)} — ${i + 1}/${photos.length}</div>
+            </div>`).join('')}
+        </div>
+        ${photos.length > 1 ? `
+          <button class="carousel-nav carousel-prev" onclick="slideMove(-1)">&#8249;</button>
+          <button class="carousel-nav carousel-next" onclick="slideMove(1)">&#8250;</button>` : ''}
+      </div>
+      ${photos.length > 1 ? `<div class="carousel-dots" id="carousel-dots">
+        ${photos.map((_, i) => `<button class="carousel-dot${i === 0 ? ' active' : ''}" onclick="goSlide(${i})"></button>`).join('')}
+      </div>` : ''}`;
+  }
+
+  document.getElementById('modal-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function slideMove(dir) {
+  const photos = currentAlbum.photos || [];
+  currentSlide = (currentSlide + dir + photos.length) % photos.length;
+  updateCarousel();
+}
+
+function goSlide(i) {
+  currentSlide = i;
+  updateCarousel();
+}
+
+function updateCarousel() {
+  const slides = document.getElementById('carousel-slides');
+  if (slides) slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+  document.querySelectorAll('.carousel-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === currentSlide);
+  });
+}
+
+// Teclado carrusel
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('modal-overlay').classList.contains('active')) return;
+  if (e.key === 'ArrowLeft') slideMove(-1);
+  if (e.key === 'ArrowRight') slideMove(1);
+  if (e.key === 'Escape') closeModal();
+});
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modal-overlay') && e.type !== 'click') return;
+  if (e && e.currentTarget === document.getElementById('modal-overlay') && e.target !== e.currentTarget) return;
+  document.getElementById('modal-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal-close').onclick = () => {
+  document.getElementById('modal-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+};
+
+document.getElementById('modal-overlay').onclick = function(e) {
+  if (e.target === this) {
+    this.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+};
+
+// ---- TOAST ----
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ---- UTILS ----
+function escHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ---- INIT ----
+initHero();
+if (sessionStorage.getItem('rawson_auth') === '1') {
+  showSection('dashboard');
+} else {
+  showSection('home');
+}
+
+// Datos de ejemplo si es la primera vez
+if (!getAlbums().length) {
+  const ejemplo = [
+    {
+      id: 1,
+      title: 'Fundación de la escuela',
+      year: '1854',
+      desc: 'Momentos históricos que marcaron el inicio de nuestra institución en Godoy Cruz, Mendoza.',
+      photos: []
+    },
+    {
+      id: 2,
+      title: 'Acto del centenario',
+      year: '1954',
+      desc: 'Celebración del primer centenario de la Escuela Guillermo Rawson con toda la comunidad educativa.',
+      photos: []
+    },
+    {
+      id: 3,
+      title: 'Renovación edilicia',
+      year: '2010',
+      desc: 'Trabajos de restauración y puesta en valor del histórico edificio escolar.',
+      photos: []
+    }
+  ];
+  saveAlbums(ejemplo);
+  renderTimeline();
+}
+</script>
+</body>
+</html>
